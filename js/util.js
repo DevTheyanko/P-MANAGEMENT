@@ -73,3 +73,28 @@ export async function sha256Hex(text) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
+
+// ───────────────────────── Tema claro / oscuro ─────────────────────────
+const THEME_KEY = 'pz_theme';
+
+/** 'light' | 'dark' | 'system' (system = sigue las preferencias del dispositivo). */
+export function getTheme() {
+  const t = localStorage.getItem(THEME_KEY);
+  return t === 'light' || t === 'dark' ? t : 'system';
+}
+
+export function applyTheme(theme) {
+  if (theme === 'light' || theme === 'dark') {
+    localStorage.setItem(THEME_KEY, theme);
+    document.documentElement.setAttribute('data-theme', theme);
+  } else {
+    localStorage.removeItem(THEME_KEY);
+    document.documentElement.removeAttribute('data-theme');
+  }
+}
+
+export function cycleTheme() {
+  const next = { system: 'light', light: 'dark', dark: 'system' }[getTheme()];
+  applyTheme(next);
+  return next;
+}

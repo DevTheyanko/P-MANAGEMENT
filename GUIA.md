@@ -22,11 +22,12 @@ Tiempo estimado la primera vez: **30–40 minutos**. Solo se hace una vez.
 
 ## Paso 1 — Crear el Google Sheet
 
-1. Entra a <https://drive.google.com> → **Nuevo → Subir archivo** y sube `plantilla/Plantilla_Masas_Pizzeria.xlsx`.
-2. Ábrelo con doble clic y elige **Abrir con → Hojas de cálculo de Google**.
-3. **Archivo → Guardar como hoja de cálculo de Google.** Ponle un nombre (por ejemplo, "Masas Pizzería"). **Este paso es obligatorio**: sin él, el archivo sigue siendo un Excel dentro de Drive y la API de Sheets no puede escribirlo (da error "not supported for this document"). Verifica que el icono del archivo sea el de Sheets (verde), no el de Excel.
-4. Verifica que existen las pestañas `MOVIMIENTOS`, `PRODUCTOS` y `METAS` **en el archivo nuevo** (el de icono verde). Déjalas **vacías** y **no cambies** sus nombres ni la fila 1. (La pestaña `LEEME` es solo ayuda; la app no la usa.)
-5. Copia el **ID del Sheet** desde la barra de direcciones (debe ser la del archivo nuevo, no la del Excel original):
+1. Entra a <https://drive.google.com> → **Nuevo → Hojas de cálculo de Google → Hoja de cálculo en blanco**. No subas el `.xlsx` directamente: así el documento es nativo de Google desde el inicio y evita el error "el documento no debe ser un archivo de Office".
+2. Con esa hoja en blanco abierta: **Archivo → Importar → pestaña Subir** → elige `plantilla/Plantilla_Masas_Pizzeria.xlsx`.
+3. Google pregunta cómo importarlo: elige **"Insertar nueva(s) hoja(s)"** (no "Reemplazar hoja de cálculo") → **Importar datos**.
+4. Verás las pestañas `MOVIMIENTOS`, `PRODUCTOS`, `METAS` y `LEEME`, junto a una pestaña vacía llamada "Hoja 1". Bórrala (clic derecho en su pestaña → **Eliminar**).
+5. Déjalas **vacías** y **no cambies** los nombres de las pestañas ni la fila 1 de encabezados. (`LEEME` es solo ayuda; la app no la usa.)
+6. Copia el **ID del Sheet** desde la barra de direcciones:
    `https://docs.google.com/spreadsheets/d/` **`ESTE_ES_EL_ID`** `/edit`
 
 ---
@@ -210,7 +211,7 @@ Abre la URL una vez **con internet** (así se guarda para uso offline) y luego:
 |---|---|
 | "Sin permiso. Comparte el Google Sheet…" / "Activa Google Sheets API…" | No compartiste el Sheet con `client_email` como **Editor** (Paso 2.3), o la Sheets API no está habilitada (Paso 2.1). |
 | "No se encontró el Google Sheet" | `SPREADSHEET_ID` mal copiado. Debe ser solo el ID, sin la URL completa. |
-| "Ese archivo sigue siendo un Excel (.xlsx)" / "must not be an Office file" | El archivo en Drive no se convirtió a Sheets nativo. Ábrelo → **Archivo → Guardar como hoja de cálculo de Google** → usa el ID de esa copia nueva (icono verde). |
+| "Ese archivo sigue siendo un Excel (.xlsx)" / "must not be an Office file" | El `SPREADSHEET_ID` apunta a un archivo Office, o a la vista de compatibilidad de uno (misma URL, no convertido). Solución más segura: crea una hoja de Google en blanco y usa **Archivo → Importar → Insertar nueva(s) hoja(s)** para meterle la plantilla (Paso 1), en vez de "Abrir con / Guardar como". Usa el ID de esa hoja nueva. |
 | "Faltan pestañas en el Sheet" | Cambiaste el nombre de una pestaña. Deben llamarse exactamente `MOVIMIENTOS`, `PRODUCTOS` y `METAS`. |
 | "La clave privada de config.js no es válida" / "Google rechazó las credenciales" | `private_key` mal pegada (faltan los `\n`, quedó cortada, o tiene saltos de línea reales), la clave fue eliminada, o la hora del dispositivo está muy desfasada. |
 | La app dice "Modo local · sin Google Sheets" | `config.js` todavía tiene los textos `PEGA_AQUI…`. |

@@ -18,8 +18,8 @@ function showUpdateBanner() {
   if (document.getElementById('update-banner')) return;
   const b = document.createElement('div');
   b.id = 'update-banner';
-  b.className = 'fixed top-0 inset-x-0 z-[70] bg-queso-500 text-carbon-900 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] flex items-center justify-center gap-3 font-semibold';
-  b.innerHTML = '<span>Hay una versión nueva de la app.</span><button type="button" class="rounded-lg bg-carbon-900 text-white px-3 py-1.5 text-sm font-bold">Recargar</button>';
+  b.className = 'fixed top-0 inset-x-0 z-[70] bg-queso-500 text-gray-900 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] flex items-center justify-center gap-3 font-semibold';
+  b.innerHTML = '<span>Hay una versión nueva de la app.</span><button type="button" class="rounded-lg bg-gray-900 text-white px-3 py-1.5 text-sm font-bold">Recargar</button>';
   b.querySelector('button').addEventListener('click', () => location.reload());
   document.body.appendChild(b);
 }

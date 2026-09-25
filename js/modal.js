@@ -10,9 +10,9 @@ export function openModal({ title, body, dismissible = true, onDismiss = null })
   const el = root();
   onClose = onDismiss;
   el.innerHTML = `
-    <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-carbon-900/55 p-0 sm:p-4" data-act="modal-backdrop" ${dismissible ? '' : 'data-locked="1"'}>
+    <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/55 p-0 sm:p-4" data-act="modal-backdrop" ${dismissible ? '' : 'data-locked="1"'}>
       <div role="dialog" aria-modal="true" aria-label="${esc(title)}"
-           class="w-full sm:max-w-md max-h-[92vh] overflow-y-auto bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl pb-[max(1rem,env(safe-area-inset-bottom))]">
+           class="w-full sm:max-w-md max-h-[92vh] overflow-y-auto bg-card rounded-t-3xl sm:rounded-2xl shadow-2xl pb-[max(1rem,env(safe-area-inset-bottom))]">
         <div class="flex items-center justify-between gap-3 px-5 pt-5 pb-2">
           <h2 class="text-xl font-bold leading-tight">${esc(title)}</h2>
           ${dismissible ? `<button type="button" data-act="modal-close" class="icon-btn -mr-2" aria-label="Cerrar">${icon('x')}</button>` : ''}
@@ -67,7 +67,7 @@ export function toast(message, kind = 'ok', ms = 3200) {
   const host = document.getElementById('toast-root');
   if (!host) return;
   const el = document.createElement('div');
-  const tone = { ok: 'bg-horno-800 text-white', warn: 'bg-queso-500 text-carbon-900', err: 'bg-tomate-600 text-white' }[kind] || 'bg-horno-800 text-white';
+  const tone = { ok: 'bg-brand-800 text-white', warn: 'bg-queso-500 text-gray-900', err: 'bg-tomate-600 text-white' }[kind] || 'bg-brand-800 text-white';
   el.className = `${tone} pointer-events-auto rounded-xl px-4 py-3 text-[15px] font-medium shadow-lg max-w-md mx-auto`;
   el.setAttribute('role', kind === 'err' ? 'alert' : 'status');
   el.textContent = message;

@@ -87,7 +87,7 @@ async function toError(res) {
   if (res.status === 400 && /must not be an Office file|not supported for this document/i.test(msg)) {
     return new SheetsError(
       'range',
-      'Ese archivo sigue siendo un Excel (.xlsx) en Drive. Ábrelo y usa Archivo → Guardar como hoja de cálculo de Google, luego usa el ID de esa copia nueva en SPREADSHEET_ID.'
+      'Ese SPREADSHEET_ID apunta a un archivo de Office, no a una hoja nativa de Google. Crea una hoja de Google en blanco y usa Archivo → Importar → "Insertar nueva(s) hoja(s)" para meterle tu plantilla; usa el ID de esa hoja nueva (ver GUIA.md, paso 1).'
     );
   }
   if (res.status === 400 && /parse range|not found/i.test(msg)) {
