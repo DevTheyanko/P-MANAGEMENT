@@ -1,0 +1,69 @@
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('../fonts/bricolage-grotesque-latin-wght-normal.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-carbon-50 text-carbon-900 font-sans antialiased; }
+  button { touch-action: manipulation; }
+  :focus-visible { outline: 3px solid theme('colors.queso.500'); outline-offset: 2px; }
+  input, select, button { font-family: inherit; }
+}
+
+@layer components {
+  .h2 { @apply text-2xl font-extrabold leading-tight; }
+  .h3 { @apply text-lg font-bold mb-2.5; }
+  .label { @apply block text-sm font-semibold text-carbon-700 mb-1.5; }
+
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 min-h-[52px] font-bold text-base select-none transition-colors disabled:opacity-60 disabled:pointer-events-none active:scale-[.985]; }
+  .btn-sm { @apply min-h-[40px] px-3 text-sm rounded-lg; }
+  .btn-primary { @apply bg-horno-700 text-white hover:bg-horno-800 active:bg-horno-900; }
+  .btn-tomate { @apply bg-tomate-600 text-white hover:bg-tomate-700; }
+  .btn-danger { @apply bg-tomate-600 text-white hover:bg-tomate-700; }
+  .btn-ghost { @apply bg-white text-carbon-900 border border-carbon-300 hover:bg-carbon-50; }
+  .btn-outline-light { @apply bg-white/10 text-white border border-white/30 hover:bg-white/20; }
+  .icon-btn { @apply inline-flex items-center justify-center w-10 h-10 rounded-full text-carbon-500 hover:bg-carbon-100 hover:text-carbon-900; }
+
+  .card { @apply bg-white rounded-2xl border border-carbon-200 p-4; }
+  .field { @apply w-full rounded-xl border border-carbon-300 bg-white px-3.5 min-h-[52px] text-lg placeholder:text-carbon-300; }
+  .field:focus-visible { @apply border-horno-700 ring-4 ring-horno-100; outline: none; }
+
+  .chip { @apply inline-flex items-center justify-center min-h-[44px] px-4 rounded-full border border-carbon-300 bg-white font-semibold text-carbon-700 select-none transition-colors; }
+  .chip.is-on { @apply bg-horno-700 border-horno-700 text-white; }
+
+  .seg-btn { @apply min-h-[48px] rounded-xl font-bold text-carbon-500 transition-colors; }
+  .seg-btn.is-on { @apply bg-white text-horno-800 shadow-sm; }
+
+  .badge { @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold whitespace-nowrap shrink-0; }
+  .badge-ok { @apply bg-horno-100 text-horno-800; }
+  .badge-warn { @apply bg-tomate-100 text-tomate-700; }
+  .badge-mute { @apply bg-carbon-100 text-carbon-500; }
+
+  /* Disco de masa: su diámetro representa el tamaño real */
+  .disc { @apply inline-block rounded-full bg-masa-200 border-[3px] border-masa-400; box-shadow: inset 0 0 0 3px theme('colors.masa.100'); }
+  .size-btn { @apply flex flex-col items-center justify-end w-full rounded-2xl border-2 border-transparent pt-1.5 pb-2 transition-colors; }
+  .size-slot { @apply flex items-center justify-center h-[64px]; }
+  .size-lbl { @apply mt-1 text-[15px] font-bold text-carbon-700; }
+  .size-btn:hover { @apply bg-carbon-50; }
+  .size-btn.is-on { @apply border-horno-700 bg-horno-50; }
+  .size-btn.is-on .size-lbl { @apply text-horno-800; }
+  .size-btn.is-on .disc { @apply border-horno-700; }
+
+  .step-btn { @apply inline-flex items-center justify-center w-16 rounded-xl bg-carbon-100 text-carbon-900 active:bg-carbon-200 select-none; }
+
+  .tile { @apply rounded-2xl bg-white border border-carbon-200 px-3.5 py-3; }
+  .tile-zero { @apply bg-carbon-50 text-carbon-500; }
+  .tile-neg { @apply border-tomate-500 bg-tomate-100; }
+
+  .navbtn { @apply w-full flex flex-col items-center gap-0.5 pt-2 pb-1.5 text-[11px] font-bold text-carbon-500 border-t-[3px] border-transparent
+                   md:flex-row md:gap-3 md:text-base md:px-3.5 md:py-3 md:rounded-xl md:border-t-0 md:border-l-[3px] md:justify-start hover:text-carbon-900; }
+  .navbtn.is-on { @apply text-horno-700 border-horno-700 md:bg-white; }
+}
