@@ -15,7 +15,7 @@ export const CONFIG = {
   // ── Google Sheets ────────────────────────────────────────────────
   // El ID está en la URL del Sheet:
   // https://docs.google.com/spreadsheets/d/  ESTE_ES_EL_ID  /edit
-  SPREADSHEET_ID: 'PEGA_AQUI_EL_ID_DE_TU_GOOGLE_SHEET',
+  SPREADSHEET_ID: '1wRLsrW2Bi3GqgizUzD2QHh90doExn6jEmBFv5uy5POc',
 
   // Cuenta de servicio de Google Cloud (archivo JSON que descargas al
   // crear la clave). Copia SOLO estos dos campos tal cual vienen en el JSON.
