@@ -77,13 +77,15 @@ Guarda el archivo.
 
 ---
 
-## Paso 4 — Cambiar el PIN de administrador
+## Paso 4 — Cambiar el PIN de administrador de cada persona
 
-El PIN de ejemplo es **`1234`**. Cámbialo antes de publicar.
+Cada nombre en `USUARIOS` tiene su propio PIN, dentro de `PINES_ADMIN_SHA256` en `js/config.js`. Quien inicie sesión con un nombre que **no** esté en esa lista (por ejemplo, alguien que escribió su nombre en "Otro nombre") usa el PIN de `PIN_ADMIN_DEFECTO_SHA256`.
 
-El PIN no se guarda en texto plano, sino como huella SHA-256. Para generar la de tu PIN nuevo, usa una de estas opciones:
+Todos vienen de fábrica con el PIN de ejemplo **`2580`**. Cámbialos antes de publicar, o al menos dale uno propio a cada persona de confianza.
 
-**Opción A — en el navegador (cualquier sistema).** Abre cualquier página, pulsa F12 → pestaña **Consola**, pega esto cambiando `4821` por tu PIN y pulsa Enter:
+El PIN no se guarda en texto plano, sino como huella SHA-256. Para generar la de un PIN nuevo, usa una de estas opciones:
+
+**Opción A — en el navegador (cualquier sistema).** Abre cualquier página, pulsa F12 → pestaña **Consola**, pega esto cambiando `4821` por el PIN elegido y pulsa Enter:
 
 ```js
 crypto.subtle.digest('SHA-256', new TextEncoder().encode('4821'))
@@ -96,8 +98,16 @@ crypto.subtle.digest('SHA-256', new TextEncoder().encode('4821'))
 echo -n "4821" | sha256sum
 ```
 
-Copia el texto de 64 caracteres y pégalo en `ADMIN_PIN_SHA256` dentro de `js/config.js`.
-Tras 5 intentos fallidos la app bloquea el acceso admin durante 30 segundos.
+Copia el texto de 64 caracteres y pégalo en la línea de esa persona dentro de `PINES_ADMIN_SHA256` (o en `PIN_ADMIN_DEFECTO_SHA256` para el PIN por defecto). Por ejemplo, para darle a Laura el PIN `4821`:
+
+```js
+PINES_ADMIN_SHA256: {
+  ...
+  Laura: 'EL_HASH_DE_64_CARACTERES_QUE_COPIASTE',
+},
+```
+
+Tras 5 intentos fallidos la app bloquea el acceso admin durante 30 segundos, sin importar de quién sea el PIN.
 
 ---
 

@@ -532,7 +532,7 @@ export function viewAdmin() {
 // ───────────────────────── Formularios (dentro de modales) ─────────────────────────
 export const pinForm = () => `
   <form data-form="pin" class="space-y-4">
-    <p class="text-carbon-500">Escribe el PIN de administrador.</p>
+    <p class="text-carbon-500">Escribe el PIN de administrador de <b class="text-carbon-900">${esc(store.get().usuario)}</b>.</p>
     <input name="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" class="field text-center text-3xl font-bold tracking-[0.4em]" aria-label="PIN" required>
     <p id="pin-error" class="text-tomate-text font-semibold text-sm hidden" role="alert"></p>
     <button class="btn btn-primary w-full" type="submit">Entrar</button>

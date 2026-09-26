@@ -3,8 +3,15 @@
     "public": ".",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "dev/**", "plantilla/**", "GUIA.md", "_headers"],
     "headers": [
-      { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
-      { "source": "/**/*.@(html|js|css|webmanifest)", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+      { "source": "/sw.js", "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Content-Type", "value": "text/javascript; charset=utf-8" }
+      ] },
+      { "source": "/manifest.webmanifest", "headers": [
+        { "key": "Cache-Control", "value": "no-cache" },
+        { "key": "Content-Type", "value": "application/manifest+json; charset=utf-8" }
+      ] },
+      { "source": "/**/*.@(html|js|css)", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
       { "source": "/", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
     ]
   }

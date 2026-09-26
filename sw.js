@@ -30,6 +30,7 @@ const SHELL = [
   'js/views.js',
   'icons/icon-192.png',
   'icons/icon-512.png',
+  'icons/icon-maskable-512.png',
   'icons/apple-touch-icon.png',
 ];
 
@@ -37,13 +38,28 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE);
-      await Promise.all(
+      // Si un solo archivo falla (red lenta, un recurso opcional caído, etc.)
+      // no debe tumbar la instalación entera: eso es lo que deja la app
+      // "instalando" para siempre en algunos Android. Los críticos (HTML/JS/CSS)
+      // sí se reintentan una vez; el resto se ignora si falla.
+      const critical = new Set(['./', 'index.html', 'manifest.webmanifest', 'css/app.css', 'js/app.js', 'js/ui.js', 'js/views.js', 'js/config.js']);
+      const results = await Promise.allSettled(
         SHELL.map(async (url) => {
-          const res = await fetch(new Request(url, { cache: 'reload' }));
-          if (!res.ok) throw new Error(`No se pudo precargar ${url} (${res.status})`);
-          await cache.put(url, res);
+          const req = new Request(url, { cache: 'reload' });
+          let res;
+          try {
+            res = await fetch(req);
+            if (!res.ok) throw new Error(String(res.status));
+          } catch (e) {
+            if (!critical.has(url)) return; // no crítico: seguimos sin él
+            res = await fetch(req); // un reintento para los críticos
+          }
+          if (res.ok) await cache.put(url, res);
         }),
       );
+      results.forEach((r, i) => {
+        if (r.status === 'rejected') console.warn('No se pudo precargar', SHELL[i], r.reason);
+      });
       await self.skipWaiting();
     })(),
   );

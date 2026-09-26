@@ -496,7 +496,9 @@ async function onSubmit(e) {
     } catch {
       return fail('Este navegador necesita HTTPS para validar el PIN.');
     }
-    if (hash === CONFIG.ADMIN_PIN_SHA256) {
+    const usuario = store.get().usuario;
+    const expected = CONFIG.PINES_ADMIN_SHA256[usuario] || CONFIG.PIN_ADMIN_DEFECTO_SHA256;
+    if (hash === expected) {
       pinFails = 0;
       adminOn();
       closeModal();
