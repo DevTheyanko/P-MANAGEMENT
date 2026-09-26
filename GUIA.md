@@ -70,18 +70,21 @@ SERVICE_ACCOUNT: {
 ```
 
 - **`private_key`**: copia el valor del JSON **tal cual**, con los `\n` escritos como texto (barra invertida + n). No los conviertas en saltos de línea reales. Debe quedar en **una sola línea** entre comillas simples.
-- **`USUARIOS`**: los nombres que salen al abrir la app (por defecto `Jean` y `Alfredo`). Quien no esté en la lista puede escribir su nombre.
+- **`USUARIOS`**: los nombres que salen al abrir la app. Ya no se puede escribir un nombre libre — cada persona necesita estar en esta lista y tener su PIN en `PINES_LOGIN_SHA256` (ver Paso 4).
 - **`PRODUCTOS_INICIALES`**: se usan solo mientras la pestaña `PRODUCTOS` esté vacía. Después el admin gestiona todo desde la app.
 
 Guarda el archivo.
 
 ---
 
-## Paso 4 — Cambiar el PIN de administrador de cada persona
+## Paso 4 — Los PIN de cada persona
 
-Cada nombre en `USUARIOS` tiene su propio PIN, dentro de `PINES_ADMIN_SHA256` en `js/config.js`. Quien inicie sesión con un nombre que **no** esté en esa lista (por ejemplo, alguien que escribió su nombre en "Otro nombre") usa el PIN de `PIN_ADMIN_DEFECTO_SHA256`.
+La app usa **dos PIN distintos por persona**, ambos en `js/config.js`:
 
-Todos vienen de fábrica con el PIN de ejemplo **`2580`**. Cámbialos antes de publicar, o al menos dale uno propio a cada persona de confianza.
+- **`PINES_LOGIN_SHA256`** — hace falta para poder **entrar** a la app con ese nombre. Ya no se puede escribir un nombre libre: solo los de `USUARIOS`, y cada uno con su PIN. Sin el PIN correcto, esa persona no puede usar la app.
+- **`PINES_ADMIN_SHA256`** — un segundo candado, aparte, para entrar en **modo administrador** (gestionar productos, metas y ajustes) una vez ya adentro. Puede ser igual o distinto al PIN de entrada — por ejemplo, dale a todo el personal su PIN de entrada, pero solo a Gaston y Jean un PIN de administrador que solo ellos sepan.
+
+Todos vienen de fábrica con el PIN de ejemplo **`2580`** en ambos. Cámbialos antes de publicar.
 
 El PIN no se guarda en texto plano, sino como huella SHA-256. Para generar la de un PIN nuevo, usa una de estas opciones:
 
@@ -98,16 +101,20 @@ crypto.subtle.digest('SHA-256', new TextEncoder().encode('4821'))
 echo -n "4821" | sha256sum
 ```
 
-Copia el texto de 64 caracteres y pégalo en la línea de esa persona dentro de `PINES_ADMIN_SHA256` (o en `PIN_ADMIN_DEFECTO_SHA256` para el PIN por defecto). Por ejemplo, para darle a Laura el PIN `4821`:
+Copia el texto de 64 caracteres y pégalo en la línea de esa persona. Por ejemplo, para darle a Laura el PIN de entrada `4821`:
 
 ```js
-PINES_ADMIN_SHA256: {
+PINES_LOGIN_SHA256: {
   ...
   Laura: 'EL_HASH_DE_64_CARACTERES_QUE_COPIASTE',
 },
 ```
 
-Tras 5 intentos fallidos la app bloquea el acceso admin durante 30 segundos, sin importar de quién sea el PIN.
+Y lo mismo en `PINES_ADMIN_SHA256` si además va a ser administradora.
+
+Tras 5 intentos fallidos (de entrada o de admin) la app bloquea ese acceso durante 30 segundos.
+
+Si agregas a alguien nuevo en `USUARIOS`, no olvides añadir también su línea en `PINES_LOGIN_SHA256` — si no, la app le avisará que no tiene PIN configurado y no podrá entrar.
 
 ---
 

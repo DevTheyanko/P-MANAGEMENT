@@ -76,13 +76,6 @@ export function viewLogin() {
     <div class="grid grid-cols-2 gap-3">
       ${CONFIG.USUARIOS.map((u) => `<button type="button" data-act="login" data-user="${esc(u)}" class="btn btn-primary min-h-[64px] text-xl">${esc(u)}</button>`).join('')}
     </div>
-    <form data-form="login-other" class="mt-6">
-      <label class="label" for="other-user">Otro nombre</label>
-      <div class="flex gap-2">
-        <input id="other-user" name="user" class="field" maxlength="24" autocomplete="off" placeholder="Escribe tu nombre">
-        <button class="btn btn-ghost" type="submit">Entrar</button>
-      </div>
-    </form>
     ${ios ? `<p class="mt-8 text-sm text-carbon-500 card">Para instalarla en iPhone: toca <b>Compartir</b> y luego <b>Añadir a pantalla de inicio</b>.</p>` : ''}
   </main>`;
 }
@@ -530,9 +523,9 @@ export function viewAdmin() {
 }
 
 // ───────────────────────── Formularios (dentro de modales) ─────────────────────────
-export const pinForm = () => `
+export const pinForm = (usuario, mode = 'admin') => `
   <form data-form="pin" class="space-y-4">
-    <p class="text-carbon-500">Escribe el PIN de administrador de <b class="text-carbon-900">${esc(store.get().usuario)}</b>.</p>
+    <p class="text-carbon-500">${mode === 'login' ? `Escribe el PIN de` : `Escribe el PIN de administrador de`} <b class="text-carbon-900">${esc(usuario)}</b>.</p>
     <input name="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" class="field text-center text-3xl font-bold tracking-[0.4em]" aria-label="PIN" required>
     <p id="pin-error" class="text-tomate-text font-semibold text-sm hidden" role="alert"></p>
     <button class="btn btn-primary w-full" type="submit">Entrar</button>

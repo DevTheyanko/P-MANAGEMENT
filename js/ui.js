@@ -87,12 +87,26 @@ function login(name) {
 }
 
 let pinAfter = null;
+let pinKind = 'admin'; // 'login' | 'admin'
+let pinTarget = '';
 let pinFails = 0;
 let pinLockedUntil = 0;
 
+function askLoginPin(usuario) {
+  if (!CONFIG.PINES_LOGIN_SHA256[usuario]) {
+    toast(`${usuario} no tiene un PIN configurado. Pide al administrador que lo agregue en config.js.`, 'err');
+    return;
+  }
+  pinKind = 'login';
+  pinTarget = usuario;
+  openModal({ title: 'Iniciar sesión', body: pinForm(usuario, 'login') });
+}
+
 function askPin(after) {
   pinAfter = after || null;
-  openModal({ title: 'Modo administrador', body: pinForm() });
+  pinKind = 'admin';
+  pinTarget = store.get().usuario;
+  openModal({ title: 'Modo administrador', body: pinForm(pinTarget, 'admin') });
 }
 
 function adminOn() {
@@ -274,7 +288,7 @@ async function onClick(e) {
     case 'modal-close':
       return closeModal();
     case 'login':
-      return login(d.user);
+      return askLoginPin(d.user);
     case 'tab':
       return gotoTab(d.tab);
 
@@ -479,8 +493,6 @@ async function onSubmit(e) {
   const fd = new FormData(form);
   const kind = form.dataset.form;
 
-  if (kind === 'login-other') return login(fd.get('user'));
-
   if (kind === 'pin') {
     const err = $('#pin-error');
     const fail = (msg) => {
@@ -496,16 +508,20 @@ async function onSubmit(e) {
     } catch {
       return fail('Este navegador necesita HTTPS para validar el PIN.');
     }
-    const usuario = store.get().usuario;
-    const expected = CONFIG.PINES_ADMIN_SHA256[usuario] || CONFIG.PIN_ADMIN_DEFECTO_SHA256;
+    const expected =
+      pinKind === 'login' ? CONFIG.PINES_LOGIN_SHA256[pinTarget] : CONFIG.PINES_ADMIN_SHA256[pinTarget] || CONFIG.PIN_ADMIN_DEFECTO_SHA256;
     if (hash === expected) {
       pinFails = 0;
-      adminOn();
       closeModal();
-      const next = pinAfter;
-      pinAfter = null;
-      next ? next() : renderApp();
-      toast('Modo administrador activado.');
+      if (pinKind === 'login') {
+        login(pinTarget);
+      } else {
+        adminOn();
+        const next = pinAfter;
+        pinAfter = null;
+        next ? next() : renderApp();
+        toast('Modo administrador activado.');
+      }
     } else {
       pinFails += 1;
       if (pinFails >= 5) {
