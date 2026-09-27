@@ -232,7 +232,8 @@ Abre la URL una vez **con internet** (así se guarda para uso offline) y luego:
 | "Faltan pestañas en el Sheet" | Cambiaste el nombre de una pestaña. Deben llamarse exactamente `MOVIMIENTOS`, `PRODUCTOS` y `METAS`. |
 | "La clave privada de config.js no es válida" / "Google rechazó las credenciales" | `private_key` mal pegada (faltan los `\n`, quedó cortada, o tiene saltos de línea reales), la clave fue eliminada, o la hora del dispositivo está muy desfasada. |
 | La app dice "Modo local · sin Google Sheets" | `config.js` todavía tiene los textos `PEGA_AQUI…`. |
-| No aparece el botón Instalar | Debe estar en HTTPS (no `http://`) y haberse abierto al menos una vez con internet. En iPhone, usa Safari. |
+| No aparece el botón Instalar | Debe estar en HTTPS (no `http://`) y haberse abierto al menos una vez con internet. En iPhone, usa Safari — ahí el botón nunca aparece, se instala manualmente (ver Paso 7). |
+| Android: la instalación se queda pegada en "Instalando…" y nunca termina | Antes de reintentar, borra el intento anterior: Chrome → ⋮ junto a la URL → **Información del sitio** → **Borrar datos del sitio**, o mantén presionado el ícono a medias en la pantalla de inicio → Desinstalar. Luego vuelve a abrir la URL y a instalar. Si sigue pegado, prueba con Wi-Fi (algunas redes móviles cortan la descarga del instalador). |
 | Sigo viendo la versión anterior | Subiste cambios sin cambiar `APP_VERSION`. Súbela (Paso "Publicar una actualización") y recarga. |
 | Inventario negativo | Se procesó más masa base de la registrada. Registra la producción faltante o haz un *Ajuste* desde Admin. |
 

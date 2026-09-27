@@ -53,15 +53,15 @@ export const CONFIG = {
   // (gestionar productos, metas y ajustes). Puede ser igual o distinto
   // al PIN de entrada de cada persona — es un segundo candado aparte.
   PINES_ADMIN_SHA256: {
-    Gaston: 'ed946f65d2c785d90e827c5ffd879ce3b49c68d4c88013074176a7e73bc58bcf',
-    Jean: 'ed946f65d2c785d90e827c5ffd879ce3b49c68d4c88013074176a7e73bc58bcf',
-    Deibis: 'ed946f65d2c785d90e827c5ffd879ce3b49c68d4c88013074176a7e73bc58bcf',
-    Alfredo: 'ed946f65d2c785d90e827c5ffd879ce3b49c68d4c88013074176a7e73bc58bcf',
-    Midgalia: 'ed946f65d2c785d90e827c5ffd879ce3b49c68d4c88013074176a7e73bc58bcf',
-    Laura: 'ed946f65d2c785d90e827c5ffd879ce3b49c68d4c88013074176a7e73bc58bcf',
+    Gaston: 'f68a48a9c71bc372e609614120de1687419e54974418fadeb37b8a0454ad5f68',
+    Jean: 'f68a48a9c71bc372e609614120de1687419e54974418fadeb37b8a0454ad5f68',
+    Deibis: 'f68a48a9c71bc372e609614120de1687419e54974418fadeb37b8a0454ad5f68',
+    Alfredo: 'f68a48a9c71bc372e609614120de1687419e54974418fadeb37b8a0454ad5f68',
+    Midgalia: 'f68a48a9c71bc372e609614120de1687419e54974418fadeb37b8a0454ad5f68',
+    Laura: 'f68a48a9c71bc372e609614120de1687419e54974418fadeb37b8a0454ad5f68',
   },
   // PIN para cualquiera que no esté en la lista de arriba. Ejemplo: 2580
-  PIN_ADMIN_DEFECTO_SHA256: 'ed946f65d2c785d90e827c5ffd879ce3b49c68d4c88013074176a7e73bc58bcf',
+  PIN_ADMIN_DEFECTO_SHA256: 'c28b39301e7e776610caa863459bf05c4fc9890471d9c77ad061253930dc36ff',
 
   // ── Catálogo ─────────────────────────────────────────────────────
   BASE_NAME: 'Masa Base',
