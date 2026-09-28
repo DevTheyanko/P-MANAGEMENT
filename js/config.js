@@ -45,7 +45,7 @@ export const CONFIG = {
   // Sal única de esta instalación para proteger los PIN (ver GUIA.md, paso 4).
   // Cambiarla invalida TODOS los hashes de abajo (habría que regenerarlos).
   // Genera la tuya propia al publicar — no dejes esta de fábrica.
-  PIN_SALT: '3d5f2faa6ace2143d584348bb8dd8dc5646f6a7bed7a5c1dfe468da7e7fb292d',
+  PIN_SALT: 'eff3fdd3f486565f12baf0df16bd88f07f5652e3489aa047b92d78c57b9cac8c',
 
   // PIN para ENTRAR a la app con cada nombre (obligatorio). Se guarda como
   // huella PBKDF2 (150.000 vueltas + la sal de arriba) — mucho más resistente
@@ -54,8 +54,8 @@ export const CONFIG = {
   // corresponden TODOS al PIN de ejemplo 2580 — para darle a alguien su
   // propio PIN, genera su hash como en GUIA.md (paso 4) y reemplaza su línea.
   PINES_LOGIN: {
-    Gaston: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Jean: '3d5f2faa6ace2143d584348bb8dd8dc5646f6a7bed7a5c1dfe468da7e7fb292d',
+    Gaston: 'eff3fdd3f486565f12baf0df16bd88f07f5652e3489aa047b92d78c57b9cac8c',
+    Jean: 'eff3fdd3f486565f12baf0df16bd88f07f5652e3489aa047b92d78c57b9cac8c',
     Deibis: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Alfredo: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Midgalia: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
@@ -66,15 +66,15 @@ export const CONFIG = {
   // (gestionar productos, metas y ajustes). Puede ser igual o distinto
   // al PIN de entrada de cada persona — es un segundo candado aparte.
   PINES_ADMIN: {
-    Gaston: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Jean: '3d5f2faa6ace2143d584348bb8dd8dc5646f6a7bed7a5c1dfe468da7e7fb292d',
+    Gaston: 'eff3fdd3f486565f12baf0df16bd88f07f5652e3489aa047b92d78c57b9cac8c',
+    Jean: 'eff3fdd3f486565f12baf0df16bd88f07f5652e3489aa047b92d78c57b9cac8c',
     Deibis: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Alfredo: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Midgalia: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Laura: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
   },
   // PIN para cualquiera que no esté en la lista de arriba. Ejemplo: 2580
-  PIN_ADMIN_DEFECTO: '3d5f2faa6ace2143d584348bb8dd8dc5646f6a7bed7a5c1dfe468da7e7fb292d',
+  PIN_ADMIN_DEFECTO: 'eff3fdd3f486565f12baf0df16bd88f07f5652e3489aa047b92d78c57b9cac8c',
 
   // ── Catálogo ─────────────────────────────────────────────────────
   BASE_NAME: 'Masa Base',
