@@ -41,7 +41,7 @@ const disc = (size, scale = 1) => {
   if (t?.forma === 'rectangulo') {
     const w = Math.round(d * 1.34);
     const h = Math.round(d * 0.8);
-    return `<span class="disc disc-rect" style="width:${w}px;height:${h}px"></span>`;
+    return `<span class="disc disc-rect" style="width:${h}px;height:${w}px"></span>`;
   }
   return `<span class="disc" style="width:${d}px;height:${d}px"></span>`;
 };
