@@ -29,7 +29,7 @@ function fmtG(g, unit = 'g') {
 const disc = (id) => {
   const t = CONFIG.TAMANOS.find((x) => x.id === id);
   const d = Math.round((t?.dia ?? 40) * 1);
-  if (t?.forma === 'rectangulo') return `<span class="disc disc-rect" style="width:${Math.round(d * 1.34)}px;height:${Math.round(d * 0.8)}px"></span>`;
+  if (t?.forma === 'rectangulo') return `<span class="disc disc-rect" style="width:${Math.round(d * 0.8)}px;height:${Math.round(d * 1.34)}px"></span>`;
   return `<span class="disc" style="width:${d}px;height:${d}px"></span>`;
 };
 
