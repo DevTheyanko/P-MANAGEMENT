@@ -9,6 +9,7 @@ import {
 } from './views.js';
 import { openModal, closeModal, confirmDialog, toast, isModalOpen } from './modal.js';
 import { copyText, renderPng, reportText } from './report.js';
+import { viewCalculadora, calcClick, calcInput, updateCalcOut } from './calculadora.js';
 import { derivePinHex, dayKey, cycleTheme } from './util.js';
 
 const { BASE, TIPO } = store;
@@ -19,6 +20,7 @@ const app = () => document.getElementById('app');
 const VIEWS = {
   registrar: viewRegistrar,
   inventario: viewInventario,
+  calculadora: viewCalculadora,
   metas: viewMetas,
   reportes: viewReportes,
   admin: viewAdmin,
@@ -47,6 +49,10 @@ export function renderView() {
   // No destruir el campo de cantidad mientras la persona escribe
   if (ui.tab === 'registrar' && document.activeElement?.id === 'qty') {
     updateHint();
+    return;
+  }
+  if (ui.tab === 'calculadora' && document.activeElement?.id?.startsWith('calc-')) {
+    updateCalcOut();
     return;
   }
   normalizeRegistrar();
@@ -281,6 +287,8 @@ async function onClick(e) {
   const act = el.dataset.act;
   const d = el.dataset;
 
+  if (act.startsWith('calc-')) return calcClick(act, d, renderView);
+
   switch (act) {
     case 'modal-backdrop':
       if (e.target === el && !d.locked) closeModal();
@@ -465,6 +473,7 @@ async function onClick(e) {
 
 function onInput(e) {
   const t = e.target;
+  if (t.id?.startsWith('calc-')) return calcInput(t);
   if (t.id === 'qty') {
     t.value = t.value.replace(/\D/g, '').slice(0, 5);
     ui.qty = Number(t.value) || 0;

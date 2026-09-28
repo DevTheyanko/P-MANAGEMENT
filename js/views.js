@@ -127,13 +127,14 @@ export function viewHeader() {
 export const TABS = [
   { id: 'registrar', label: 'Registrar', icon: 'pen' },
   { id: 'inventario', label: 'Inventario', icon: 'box' },
+  { id: 'calculadora', label: 'Calcular', icon: 'calc' },
   { id: 'metas', label: 'Metas', icon: 'target' },
   { id: 'reportes', label: 'Reportes', icon: 'report' },
   { id: 'admin', label: 'Admin', icon: 'lock' },
 ];
 
 export function viewNav() {
-  return `<ul class="grid grid-cols-5 md:grid-cols-1 md:gap-1 md:p-3 md:sticky md:top-44">
+  return `<ul class="grid grid-cols-6 md:grid-cols-1 md:gap-1 md:p-3 md:sticky md:top-44">
     ${TABS.map((t) => `
       <li><button type="button" data-act="tab" data-tab="${t.id}" class="navbtn ${ui.tab === t.id ? 'is-on' : ''}" ${ui.tab === t.id ? 'aria-current="page"' : ''}>
         ${icon(t.id === 'admin' && ui.admin ? 'unlock' : t.icon, 'w-6 h-6')}<span>${t.label}</span>
