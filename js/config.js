@@ -45,7 +45,7 @@ export const CONFIG = {
   // Sal única de esta instalación para proteger los PIN (ver GUIA.md, paso 4).
   // Cambiarla invalida TODOS los hashes de abajo (habría que regenerarlos).
   // Genera la tuya propia al publicar — no dejes esta de fábrica.
-  PIN_SALT: 'c28b39301e7e776610caa863459bf05c4fc9890471d9c77ad061253930dc36ff',
+  PIN_SALT: '5f5eb57b6c2ef0f3eaebf418c8d1f25b',
 
   // PIN para ENTRAR a la app con cada nombre (obligatorio). Se guarda como
   // huella PBKDF2 (150.000 vueltas + la sal de arriba) — mucho más resistente
@@ -55,7 +55,7 @@ export const CONFIG = {
   // propio PIN, genera su hash como en GUIA.md (paso 4) y reemplaza su línea.
   PINES_LOGIN: {
     Gaston: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Jean: 'c28b39301e7e776610caa863459bf05c4fc9890471d9c77ad061253930dc36ff',
+    Jean: 'c2bbdccf74ce54c67fe2d729d8748c6e3e25fcbed885e221f95a59bf40c4159e',
     Deibis: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Alfredo: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Midgalia: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
@@ -67,14 +67,14 @@ export const CONFIG = {
   // al PIN de entrada de cada persona — es un segundo candado aparte.
   PINES_ADMIN: {
     Gaston: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Jean: 'c28b39301e7e776610caa863459bf05c4fc9890471d9c77ad061253930dc36ff',
+    Jean: 'c2bbdccf74ce54c67fe2d729d8748c6e3e25fcbed885e221f95a59bf40c4159e',
     Deibis: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Alfredo: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Midgalia: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Laura: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
   },
   // PIN para cualquiera que no esté en la lista de arriba. Ejemplo: 2580
-  PIN_ADMIN_DEFECTO: 'c28b39301e7e776610caa863459bf05c4fc9890471d9c77ad061253930dc36ff',
+  PIN_ADMIN_DEFECTO: 'c2bbdccf74ce54c67fe2d729d8748c6e3e25fcbed885e221f95a59bf40c4159e',
 
   // ── Catálogo ─────────────────────────────────────────────────────
   BASE_NAME: 'Masa Base',
