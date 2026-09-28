@@ -75,7 +75,7 @@ async function networkFirst(req) {
   try {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 6000);
-    const res = await fetch(req, { cache: 'no-store', signal: ctrl.signal });
+    const res = await fetch(req.mode === 'navigate' ? req.url : req, { cache: 'no-store', signal: ctrl.signal });
     clearTimeout(timer);
     if (res.ok && res.type === 'basic') cache.put(req, res.clone());
     return res;
