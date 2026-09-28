@@ -55,7 +55,7 @@ export const CONFIG = {
   // propio PIN, genera su hash como en GUIA.md (paso 4) y reemplaza su línea.
   PINES_LOGIN: {
     Gaston: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Jean: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
+    Jean: 'c28b39301e7e776610caa863459bf05c4fc9890471d9c77ad061253930dc36ff',
     Deibis: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Alfredo: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Midgalia: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
@@ -67,14 +67,14 @@ export const CONFIG = {
   // al PIN de entrada de cada persona — es un segundo candado aparte.
   PINES_ADMIN: {
     Gaston: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Jean: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
+    Jean: 'c28b39301e7e776610caa863459bf05c4fc9890471d9c77ad061253930dc36ff',
     Deibis: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Alfredo: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Midgalia: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
     Laura: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
   },
   // PIN para cualquiera que no esté en la lista de arriba. Ejemplo: 2580
-  PIN_ADMIN_DEFECTO: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
+  PIN_ADMIN_DEFECTO: 'c28b39301e7e776610caa863459bf05c4fc9890471d9c77ad061253930dc36ff',
 
   // ── Catálogo ─────────────────────────────────────────────────────
   BASE_NAME: 'Masa Base',
