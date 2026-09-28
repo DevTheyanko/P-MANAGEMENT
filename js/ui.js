@@ -60,9 +60,9 @@ export function renderApp() {
   }
   if (!$('#view')) {
     app().innerHTML = `
-      <header id="hdr" class="sticky top-0 z-30 bg-brand-800 text-white pt-[env(safe-area-inset-top)]"></header>
+      <header id="hdr" class="app-header bg-brand-800 text-white pt-[env(safe-area-inset-top)]"></header>
       <div class="max-w-5xl mx-auto md:flex md:items-start">
-        <nav id="nav" aria-label="Secciones" class="fixed bottom-0 inset-x-0 z-30 bg-card border-t border-carbon-200 pb-[env(safe-area-inset-bottom)] md:static md:w-52 md:shrink-0 md:bg-transparent md:border-0 md:pb-0"></nav>
+        <nav id="nav" aria-label="Secciones" class="app-nav fixed bottom-0 inset-x-0 z-30 bg-card border-t border-carbon-200 pb-[env(safe-area-inset-bottom)] md:static md:w-52 md:shrink-0 md:bg-transparent md:border-0 md:pb-0"></nav>
         <main id="view" class="flex-1 min-w-0 px-4 pt-4 pb-28 md:pb-10 md:pt-6"></main>
       </div>`;
   }

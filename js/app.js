@@ -4,8 +4,6 @@ import { initUI, renderHeader } from './ui.js';
 import { applyBrandColor } from './theme.js';
 
 applyBrandColor(CONFIG.BRAND_COLOR);
-
-// ── Instalación (Android/Chrome/Edge/escritorio) ──
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   ui.installEvt = e;
@@ -13,10 +11,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
 window.addEventListener('appinstalled', () => {
   ui.installEvt = null;
 });
-
-// ── Service Worker con control de versiones ──
-// La versión viaja en la URL (?v=), así que basta con cambiar APP_VERSION
-// en config.js para que todos los dispositivos renueven su caché.
 function showUpdateBanner() {
   if (document.getElementById('update-banner')) return;
   const b = document.createElement('div');
@@ -31,7 +25,8 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
       const hadController = !!navigator.serviceWorker.controller;
-      const reg = await navigator.serviceWorker.register(`sw.js?v=${encodeURIComponent(CONFIG.APP_VERSION)}`, {
+      const reg = await navigator.serviceWorker.register(`/sw.js?v=${encodeURIComponent(CONFIG.APP_VERSION)}`, {
+        scope: '/',
         updateViaCache: 'none',
       });
       navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -48,3 +43,18 @@ if ('serviceWorker' in navigator) {
 
 initUI();
 renderHeader();
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && !document.getElementById('modal-root')?.firstChild) {
+    document.body.classList.remove('overflow-hidden');
+  }
+});
+
+const setHdrH = () => {
+  const h = document.getElementById('hdr');
+  if (h) document.documentElement.style.setProperty('--hdr-h', h.offsetHeight + 'px');
+};
+new ResizeObserver(setHdrH).observe(document.body);
+window.addEventListener('resize', setHdrH);
+new MutationObserver(setHdrH).observe(document.getElementById('app'), { childList: true, subtree: true });
+setHdrH();

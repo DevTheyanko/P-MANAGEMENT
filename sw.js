@@ -1,22 +1,12 @@
-// Service Worker — la versión llega por la URL (sw.js?v=APP_VERSION) desde config.js.
-// Estrategia:
-//  • Archivos de la app (HTML/JS/CSS): RED PRIMERO (siempre lo más nuevo);
-//    si no hay internet o tarda más de 6 s → copia guardada.
-//  • Fuentes, iconos y librerías fijas: caché primero (cambian solo con la versión).
-//  • Google (Sheets/OAuth) y cualquier otro dominio: NO se toca. Los datos
-//    nunca se cachean, así el inventario siempre se refresca al momento.
-
 const VERSION = new URL(self.location.href).searchParams.get('v') || 'dev';
 const CACHE = `masas-${VERSION}`;
 
-// Si agregas un archivo nuevo a la app, añádelo aquí para que funcione sin internet.
 const SHELL = [
   './',
   'index.html',
   'manifest.webmanifest',
   'css/app.css',
   'fonts/bricolage-grotesque-latin-wght-normal.woff2',
-  'vendor/html2canvas.min.js',
   'js/app.js',
   'js/boot-theme.js',
   'js/config.js',
@@ -38,32 +28,19 @@ const SHELL = [
 ];
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE);
-      // Si un solo archivo falla (red lenta, un recurso opcional caído, etc.)
-      // no debe tumbar la instalación entera: eso es lo que deja la app
-      // "instalando" para siempre en algunos Android. Los críticos (HTML/JS/CSS)
-      // sí se reintentan una vez; el resto se ignora si falla.
-      const critical = new Set(['./', 'index.html', 'manifest.webmanifest', 'css/app.css', 'js/app.js', 'js/theme.js', 'js/ui.js', 'js/views.js', 'js/config.js']);
-      const results = await Promise.allSettled(
+      const work = Promise.allSettled(
         SHELL.map(async (url) => {
-          const req = new Request(url, { cache: 'reload' });
-          let res;
           try {
-            res = await fetch(req);
-            if (!res.ok) throw new Error(String(res.status));
-          } catch (e) {
-            if (!critical.has(url)) return; // no crítico: seguimos sin él
-            res = await fetch(req); // un reintento para los críticos
-          }
-          if (res.ok) await cache.put(url, res);
+            const res = await fetch(new Request(url, { cache: 'reload' }));
+            if (res.ok) await cache.put(url, res);
+          } catch (e) {}
         }),
       );
-      results.forEach((r, i) => {
-        if (r.status === 'rejected') console.warn('No se pudo precargar', SHELL[i], r.reason);
-      });
-      await self.skipWaiting();
+      await Promise.race([work, new Promise((r) => setTimeout(r, 4000))]);
     })(),
   );
 });

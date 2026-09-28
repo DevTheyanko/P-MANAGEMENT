@@ -28,9 +28,9 @@ export function openModal({ title, body, dismissible = true, onDismiss = null })
 
 export function closeModal() {
   const el = root();
+  document.body.classList.remove('overflow-hidden');
   if (!el || !el.firstChild) return;
   el.innerHTML = '';
-  document.body.classList.remove('overflow-hidden');
   const cb = onClose;
   onClose = null;
   cb?.();

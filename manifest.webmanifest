@@ -4,7 +4,7 @@
   "short_name": "Masas",
   "description": "Control de producción e inventario de masas para pizzería",
   "lang": "es",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
@@ -36,5 +36,13 @@
       "purpose": "maskable"
     }
   ],
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "categories": [
+    "business",
+    "productivity"
+  ]
 }
