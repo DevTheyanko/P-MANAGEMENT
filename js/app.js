@@ -1,6 +1,9 @@
 import { CONFIG } from './config.js';
 import { ui } from './views.js';
 import { initUI, renderHeader } from './ui.js';
+import { applyBrandColor } from './theme.js';
+
+applyBrandColor(CONFIG.BRAND_COLOR);
 
 // ── Instalación (Android/Chrome/Edge/escritorio) ──
 window.addEventListener('beforeinstallprompt', (e) => {

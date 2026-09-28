@@ -1,7 +1,12 @@
-# Netlify y Cloudflare Pages: nunca guardar en caché del navegador la app ni el Service Worker.
+# Netlify y Cloudflare Pages: seguridad + caché.
 /*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://sheets.googleapis.com https://oauth2.googleapis.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
-  Referrer-Policy: same-origin
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), serial=(), interest-cohort=()
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+  Cross-Origin-Opener-Policy: same-origin
 /
   Cache-Control: no-cache
 /index.html

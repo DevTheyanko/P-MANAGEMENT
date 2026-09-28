@@ -72,6 +72,7 @@ SERVICE_ACCOUNT: {
 - **`private_key`**: copia el valor del JSON **tal cual**, con los `\n` escritos como texto (barra invertida + n). No los conviertas en saltos de línea reales. Debe quedar en **una sola línea** entre comillas simples.
 - **`USUARIOS`**: los nombres que salen al abrir la app. Ya no se puede escribir un nombre libre — cada persona necesita estar en esta lista y tener su PIN en `PINES_LOGIN_SHA256` (ver Paso 4).
 - **`PRODUCTOS_INICIALES`**: se usan solo mientras la pestaña `PRODUCTOS` esté vacía. Después el admin gestiona todo desde la app.
+- **`BRAND_COLOR`**: el color principal de la app (botones, cabecera, selección), por defecto `'#FF0000'`. Cambia solo ese valor por cualquier color hexadecimal (por ejemplo `'#0B6FD1'` para azul) y toda la app se repinta automáticamente, tanto en tema claro como oscuro. El logo (la imagen con la "P") no cambia de color — sigue siendo el que subiste.
 
 Guarda el archivo.
 
@@ -81,40 +82,53 @@ Guarda el archivo.
 
 La app usa **dos PIN distintos por persona**, ambos en `js/config.js`:
 
-- **`PINES_LOGIN_SHA256`** — hace falta para poder **entrar** a la app con ese nombre. Ya no se puede escribir un nombre libre: solo los de `USUARIOS`, y cada uno con su PIN. Sin el PIN correcto, esa persona no puede usar la app.
-- **`PINES_ADMIN_SHA256`** — un segundo candado, aparte, para entrar en **modo administrador** (gestionar productos, metas y ajustes) una vez ya adentro. Puede ser igual o distinto al PIN de entrada — por ejemplo, dale a todo el personal su PIN de entrada, pero solo a Gaston y Jean un PIN de administrador que solo ellos sepan.
+- **`PINES_LOGIN`** — hace falta para poder **entrar** a la app con ese nombre. Solo pueden entrar los nombres de `USUARIOS`, y cada uno con su PIN.
+- **`PINES_ADMIN`** — un segundo candado, aparte, para entrar en **modo administrador** (gestionar productos, metas y ajustes) una vez adentro. Puede ser igual o distinto al PIN de entrada.
 
-Todos vienen de fábrica con el PIN de ejemplo **`2580`** en ambos. Cámbialos antes de publicar.
+Todos vienen de fábrica con el PIN de ejemplo **`2580`**. Cámbialos antes de publicar.
 
-El PIN no se guarda en texto plano, sino como huella SHA-256. Para generar la de un PIN nuevo, usa una de estas opciones:
+### Cómo se guardan (y por qué importa)
 
-**Opción A — en el navegador (cualquier sistema).** Abre cualquier página, pulsa F12 → pestaña **Consola**, pega esto cambiando `4821` por el PIN elegido y pulsa Enter:
+Los PIN **no** están en texto plano: se guardan como huella **PBKDF2** (150.000 vueltas) mezclada con una sal única de tu instalación (`PIN_SALT`). Esto hace que, si alguien copiara el código fuente, probar todos los PIN posibles le lleve mucho más tiempo que con un hash simple. Aun así, **usa PIN de 6 o más dígitos** (o mejor, una frase corta): un PIN de 4 dígitos solo tiene 10.000 combinaciones y ningún hash del lado del cliente puede protegerlo del todo (ver "Seguridad" más abajo).
 
-```js
-crypto.subtle.digest('SHA-256', new TextEncoder().encode('4821'))
-  .then(b => console.log([...new Uint8Array(b)].map(x => x.toString(16).padStart(2,'0')).join('')))
-```
+### Paso 4.1 — Genera tu propia sal (una sola vez)
 
-**Opción B — terminal (Linux/Mac).**
+La sal de fábrica es pública (viene en este ZIP). Genera la tuya y pégala en `PIN_SALT`:
 
 ```bash
-echo -n "4821" | sha256sum
+node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"
 ```
 
-Copia el texto de 64 caracteres y pégalo en la línea de esa persona. Por ejemplo, para darle a Laura el PIN de entrada `4821`:
+> ⚠️ Si cambias `PIN_SALT`, **todos** los hashes de abajo dejan de funcionar y hay que regenerarlos con la sal nueva. Hazlo **antes** de generar los PIN definitivos.
+
+### Paso 4.2 — Genera el hash de cada PIN
+
+Cambia `4821` por el PIN y `TU_SAL` por tu `PIN_SALT`, y ejecuta en una terminal con Node.js:
+
+```bash
+node -e "console.log(require('crypto').pbkdf2Sync('4821','TU_SAL',150000,32,'sha256').toString('hex'))"
+```
+
+Sin Node: abre tu app publicada (HTTPS) o `http://localhost`, pulsa F12 → **Consola**, y pega:
 
 ```js
-PINES_LOGIN_SHA256: {
+(async()=>{const pin='4821',salt='TU_SAL',e=new TextEncoder();const k=await crypto.subtle.importKey('raw',e.encode(pin),'PBKDF2',false,['deriveBits']);const b=await crypto.subtle.deriveBits({name:'PBKDF2',salt:e.encode(salt),iterations:150000,hash:'SHA-256'},k,256);console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''))})()
+```
+
+Copia el texto de 64 caracteres y pégalo en la línea de esa persona. Por ejemplo, para darle a Laura otro PIN de entrada:
+
+```js
+PINES_LOGIN: {
   ...
   Laura: 'EL_HASH_DE_64_CARACTERES_QUE_COPIASTE',
 },
 ```
 
-Y lo mismo en `PINES_ADMIN_SHA256` si además va a ser administradora.
+Y lo mismo en `PINES_ADMIN` si además va a ser administradora.
 
 Tras 5 intentos fallidos (de entrada o de admin) la app bloquea ese acceso durante 30 segundos.
 
-Si agregas a alguien nuevo en `USUARIOS`, no olvides añadir también su línea en `PINES_LOGIN_SHA256` — si no, la app le avisará que no tiene PIN configurado y no podrá entrar.
+Si agregas a alguien nuevo en `USUARIOS`, añade también su línea en `PINES_LOGIN`; si no, la app le avisará que no tiene PIN configurado y no podrá entrar.
 
 ---
 
@@ -214,11 +228,64 @@ Abre la URL una vez **con internet** (así se guarda para uso offline) y luego:
 
 ## Seguridad — léelo una vez
 
-- La clave de la cuenta de servicio va dentro de `config.js`, tal como se pidió. Eso significa que **cualquier persona que tenga la URL y sepa abrir las herramientas del navegador podría copiarla**.
-- El daño posible está acotado: esa cuenta **solo tiene acceso al Sheet que le compartiste**, nada más de tu cuenta de Google.
-- Recomendaciones: crea una cuenta de servicio **solo para esta app**, no compartas con ella ningún otro archivo, no publiques la URL en redes, y confía en **Archivo → Historial de versiones** del Sheet para deshacer cualquier cambio no deseado.
-- El PIN de admin es una barrera para evitar errores del personal, **no** seguridad fuerte, por el mismo motivo.
-- Si sospechas que la clave se filtró: en Google Cloud, cuenta de servicio → **Claves** → elimina la clave, crea otra y actualiza `config.js`.
+**Lo que ya viene protegido:**
+
+- **Cabeceras de seguridad** (en `vercel.json`, `firebase.json` y `_headers`): una política CSP estricta que solo permite cargar código de tu propio sitio y conectarse únicamente a Google Sheets; además bloquea que otra web meta tu app en un marco (clickjacking), impide el acceso a cámara/micrófono/ubicación, y fuerza HTTPS.
+- **Sin inyección de código:** todo texto que viene de personas o del Sheet (nombres de productos, usuarios…) se escapa antes de mostrarse. Se probó con cargas maliciosas y no se ejecutan.
+- **PIN con PBKDF2 + sal** y bloqueo tras 5 intentos fallidos.
+- **Solo nombres de la lista** pueden entrar, cada uno con su PIN.
+- **El Sheet solo acepta a la cuenta de servicio**, y esa cuenta solo ve ese Sheet.
+
+**Lo que ninguna app 100 % en el navegador puede esconder (y por qué):**
+
+- La clave de la cuenta de servicio va dentro de `config.js`, como se pidió. **Cualquier persona que tenga la URL y sepa abrir las herramientas del navegador puede copiarla**, y con ella editar ese Sheet. Igual pasa con los hashes de los PIN.
+- El bloqueo por intentos y el PIN protegen la **pantalla**, no el Sheet: quien copie la clave puede saltarse la app.
+- Si algún día necesitas seguridad de verdad, el paso siguiente es un pequeño servidor (por ejemplo, una función de Vercel) que guarde la clave y compruebe el PIN. Pídelo cuando lo necesites.
+
+**Qué hacer para reducir el riesgo:**
+
+1. Crea una cuenta de servicio **solo para esta app** y no compartas con ella ningún otro archivo.
+2. **No publiques la URL** en redes ni con desconocidos; compártela solo con el personal.
+3. Usa **PIN de 6+ dígitos** y una `PIN_SALT` propia (Paso 4).
+4. Revisa de vez en cuando **Archivo → Historial de versiones** del Sheet; ahí puedes deshacer cualquier cambio no deseado. Considera dejar una copia semanal del Sheet.
+5. Si sospechas que la clave se filtró: en Google Cloud, cuenta de servicio → **Claves** → elimina la clave, crea otra y actualiza `config.js`. Con eso la clave copiada deja de funcionar al instante.
+6. Cuando alguien deje de trabajar, quítalo de `USUARIOS` y `PINES_*`, sube `APP_VERSION` y vuelve a publicar.
+
+---
+
+---
+
+## Android se queda en "Instalando…"
+
+Cuando Android instala una web como app, **los servidores de Google** descargan tu `manifest.webmanifest` y tus íconos desde internet, arman una mini-app y se la mandan al teléfono. Si algo de eso falla, Chrome se queda en "Instalando…" sin mostrar error. La app ya cumple todos los requisitos técnicos (verificado con pruebas automáticas), así que casi siempre la causa está en uno de estos puntos, **de más a menos probable**:
+
+**1. Vercel está protegiendo tu sitio (causa más común en Vercel).**
+Los servidores de Google no pueden iniciar sesión en Vercel, y si tu URL exige login o un desafío, no pueden bajar el manifest ni los íconos.
+- Entra a [vercel.com](https://vercel.com) → tu proyecto → **Settings → Deployment Protection**. Pon **Vercel Authentication** en *Disabled* (o "Only Preview Deployments") y desactiva *Password Protection*. Guarda.
+- Instala usando la URL de **producción** (la que sale con `vercel --prod`, tipo `tu-proyecto.vercel.app`), **no** una URL de "deployment" con letras y números al final.
+- Prueba: abre en una **ventana de incógnito** (o con datos móviles, sin sesión de Vercel) estas dos direcciones. Ambas deben verse directo, sin pedir login:
+  `https://TU-URL/manifest.webmanifest` y `https://TU-URL/icons/icon-512.png`
+- Si tienes activado *Attack Challenge Mode* o un firewall en Vercel, desactívalo mientras instalas.
+
+**2. Google Play y Chrome desactualizados.**
+El instalador de apps web depende de Google Play Services y la tienda Play.
+- Play Store → tu foto → **Configuración → Acerca de → Actualizar Play Store**.
+- Play Store → busca **Chrome** y **Servicios de Google Play** → Actualizar.
+- Deja al menos 1 GB libre de almacenamiento.
+
+**3. La red bloquea a Google.**
+- Apaga **VPN**, **DNS privado** (Ajustes → Red → DNS privado → Desactivado) o bloqueadores de anuncios con DNS. Prueba con **datos móviles** en lugar de Wi-Fi (o al revés).
+- Desactiva el **Ahorro de datos** de Chrome si lo tienes.
+
+**4. Un intento anterior quedó a medias.**
+- Chrome → ⋮ → **Información del sitio → Borrar datos del sitio**.
+- Ajustes del teléfono → Apps → **Google Play Store** → Almacenamiento → **Borrar caché**.
+- Reinicia el teléfono y vuelve a intentarlo.
+
+**5. Ahorro de batería.**
+- Ajustes → Apps → Chrome (y Play Store) → Batería → **Sin restricciones** mientras instalas.
+
+**Si nada de eso funciona (plan B, siempre funciona):** en Chrome pulsa ⋮ → **Añadir a pantalla de inicio** → elige **Crear acceso directo**. Es un acceso directo instantáneo que abre la app sin pasar por los servidores de Google. También puedes abrirla con **Microsoft Edge** o **Samsung Internet** y usar allí "Añadir a pantalla de inicio".
 
 ---
 
@@ -233,7 +300,7 @@ Abre la URL una vez **con internet** (así se guarda para uso offline) y luego:
 | "La clave privada de config.js no es válida" / "Google rechazó las credenciales" | `private_key` mal pegada (faltan los `\n`, quedó cortada, o tiene saltos de línea reales), la clave fue eliminada, o la hora del dispositivo está muy desfasada. |
 | La app dice "Modo local · sin Google Sheets" | `config.js` todavía tiene los textos `PEGA_AQUI…`. |
 | No aparece el botón Instalar | Debe estar en HTTPS (no `http://`) y haberse abierto al menos una vez con internet. En iPhone, usa Safari — ahí el botón nunca aparece, se instala manualmente (ver Paso 7). |
-| Android: la instalación se queda pegada en "Instalando…" y nunca termina | Antes de reintentar, borra el intento anterior: Chrome → ⋮ junto a la URL → **Información del sitio** → **Borrar datos del sitio**, o mantén presionado el ícono a medias en la pantalla de inicio → Desinstalar. Luego vuelve a abrir la URL y a instalar. Si sigue pegado, prueba con Wi-Fi (algunas redes móviles cortan la descarga del instalador). |
+| Android: se queda en "Instalando…" y nunca termina | Ver la sección **"Android se queda en Instalando…"** justo debajo. |
 | Sigo viendo la versión anterior | Subiste cambios sin cambiar `APP_VERSION`. Súbela (Paso "Publicar una actualización") y recarga. |
 | Inventario negativo | Se procesó más masa base de la registrada. Registra la producción faltante o haz un *Ajuste* desde Admin. |
 

@@ -15,13 +15,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="preload" href="fonts/bricolage-grotesque-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/app.css">
-  <script>
-    // Aplica el tema guardado antes de pintar, para que no haya parpadeo.
-    try {
-      var t = localStorage.getItem('pz_theme');
-      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-    } catch (e) {}
-  </script>
+  <script src="/js/boot-theme.js"></script>
 </head>
 <body>
   <div id="app">

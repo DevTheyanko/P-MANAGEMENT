@@ -18,6 +18,7 @@ const SHELL = [
   'fonts/bricolage-grotesque-latin-wght-normal.woff2',
   'vendor/html2canvas.min.js',
   'js/app.js',
+  'js/boot-theme.js',
   'js/config.js',
   'js/icons.js',
   'js/modal.js',
@@ -25,6 +26,7 @@ const SHELL = [
   'js/sheets.js',
   'js/store.js',
   'js/sync.js',
+  'js/theme.js',
   'js/ui.js',
   'js/util.js',
   'js/views.js',
@@ -43,7 +45,7 @@ self.addEventListener('install', (event) => {
       // no debe tumbar la instalación entera: eso es lo que deja la app
       // "instalando" para siempre en algunos Android. Los críticos (HTML/JS/CSS)
       // sí se reintentan una vez; el resto se ignora si falla.
-      const critical = new Set(['./', 'index.html', 'manifest.webmanifest', 'css/app.css', 'js/app.js', 'js/ui.js', 'js/views.js', 'js/config.js']);
+      const critical = new Set(['./', 'index.html', 'manifest.webmanifest', 'css/app.css', 'js/app.js', 'js/theme.js', 'js/ui.js', 'js/views.js', 'js/config.js']);
       const results = await Promise.allSettled(
         SHELL.map(async (url) => {
           const req = new Request(url, { cache: 'reload' });

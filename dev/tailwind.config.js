@@ -14,8 +14,8 @@ module.exports = {
         carbon: { 50: rv('--carbon-50'), 100: rv('--carbon-100'), 200: rv('--carbon-200'), 300: rv('--carbon-300'), 500: rv('--carbon-500'), 700: rv('--carbon-700'), 900: rv('--carbon-900') },
         // Superficie de tarjetas/paneles (blanco en claro, gris oscuro en oscuro).
         card: rv('--card'),
-        // Rojo de marca. 600-900 son fijos (botones, cabecera); text/tint se adaptan al tema.
-        brand: { 50: '#FFF1F0', 100: '#FFDAD6', 600: '#FF0000', 700: '#E00000', 800: '#C10000', 900: '#970000', text: rv('--brand-text'), tint: rv('--brand-tint') },
+        // Rojo de marca (personalizable desde CONFIG.BRAND_COLOR en config.js — ver js/theme.js).
+        brand: { 50: rv('--brand-50'), 100: rv('--brand-100'), 600: rv('--brand-600'), 700: rv('--brand-700'), 800: rv('--brand-800'), 900: rv('--brand-900'), text: rv('--brand-text'), tint: rv('--brand-tint') },
         // Aviso / negativo / pendiente (salsa de tomate).
         tomate: { 100: '#FBE3DD', 500: '#DB3E24', 600: '#C9301A', 700: '#A82614', text: rv('--tomate-text'), tint: rv('--tomate-tint') },
         // Éxito / al día (verde albahaca).

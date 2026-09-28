@@ -9,7 +9,7 @@ import {
 } from './views.js';
 import { openModal, closeModal, confirmDialog, toast, isModalOpen } from './modal.js';
 import { copyText, renderPng, reportText } from './report.js';
-import { sha256Hex, dayKey, cycleTheme } from './util.js';
+import { derivePinHex, dayKey, cycleTheme } from './util.js';
 
 const { BASE, TIPO } = store;
 const $ = (sel) => document.querySelector(sel);
@@ -93,7 +93,7 @@ let pinFails = 0;
 let pinLockedUntil = 0;
 
 function askLoginPin(usuario) {
-  if (!CONFIG.PINES_LOGIN_SHA256[usuario]) {
+  if (!CONFIG.PINES_LOGIN[usuario]) {
     toast(`${usuario} no tiene un PIN configurado. Pide al administrador que lo agregue en config.js.`, 'err');
     return;
   }
@@ -504,12 +504,12 @@ async function onSubmit(e) {
     if (Date.now() < pinLockedUntil) return fail(`Demasiados intentos. Espera ${Math.ceil((pinLockedUntil - Date.now()) / 1000)} s.`);
     let hash;
     try {
-      hash = await sha256Hex(String(fd.get('pin')).trim());
+      hash = await derivePinHex(String(fd.get('pin')).trim(), CONFIG.PIN_SALT);
     } catch {
       return fail('Este navegador necesita HTTPS para validar el PIN.');
     }
     const expected =
-      pinKind === 'login' ? CONFIG.PINES_LOGIN_SHA256[pinTarget] : CONFIG.PINES_ADMIN_SHA256[pinTarget] || CONFIG.PIN_ADMIN_DEFECTO_SHA256;
+      pinKind === 'login' ? CONFIG.PINES_LOGIN[pinTarget] : CONFIG.PINES_ADMIN[pinTarget] || CONFIG.PIN_ADMIN_DEFECTO;
     if (hash === expected) {
       pinFails = 0;
       closeModal();

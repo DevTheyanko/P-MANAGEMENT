@@ -69,9 +69,21 @@ export function timeAgo(iso) {
 export const esc = (v) =>
   String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-export async function sha256Hex(text) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
+// PBKDF2 con muchas iteraciones para los PIN: a diferencia de un SHA-256 simple,
+// cada intento cuesta un tiempo real de cómputo. Esto no hace que un PIN corto
+// sea inviolable, pero sí que probar los 10.000 códigos de 4 dígitos tome
+// minutos en vez de ser instantáneo si alguien copia el hash del código fuente.
+const PIN_PBKDF2_ITERATIONS = 150_000;
+
+export async function derivePinHex(pin, salt) {
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(String(pin)), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', salt: enc.encode(String(salt || '')), iterations: PIN_PBKDF2_ITERATIONS, hash: 'SHA-256' },
+    keyMaterial,
+    256,
+  );
+  return [...new Uint8Array(bits)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 // ───────────────────────── Tema claro / oscuro ─────────────────────────
