@@ -1,9 +1,0 @@
-@media (max-width: 767px) {
-  .grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-}
-.calc-total { background: rgb(var(--brand-tint)); color: rgb(var(--brand-text)); }
-.calc-note { background: rgb(var(--carbon-50)); border: 1px solid rgb(var(--carbon-200)); }
-.border-b { border-bottom-width: 1px; }
-.mb-2 { margin-bottom: .5rem; }
-.py-3\.5 { padding-top: .875rem; padding-bottom: .875rem; }
-.text-2xl { font-size: 1.5rem; line-height: 2rem; }
