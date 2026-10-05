@@ -13,6 +13,7 @@ export const ui = {
   tab: 'registrar',
   mode: 'producir', // 'producir' | 'procesar'
   prod: null,
+  dprod: null,
   size: null,
   qty: 0,
   admin: sessionStorage.getItem('pz_admin') === '1',
@@ -59,8 +60,11 @@ const movDesc = (m) => {
   const q = Number(m.cantidad) || 0;
   if (m.tipo === TIPO.PROD) return `Produjo <b>${fmtNum(q)}</b> × ${esc(BASE)} ${esc(m.tamano)}`;
   if (m.tipo === TIPO.PROC) return `Procesó <b>${fmtNum(q)}</b> × ${esc(m.categoria)} ${esc(m.tamano)}`;
+  if (q < 0) return `Descontó <b>${fmtNum(-q)}</b> × ${esc(m.categoria)} ${esc(m.tamano)}`;
   return `Ajuste <b>${q > 0 ? '+' : ''}${fmtNum(q)}</b> × ${esc(m.categoria)} ${esc(m.tamano)}`;
 };
+
+const pesoOf = (size) => CONFIG.TAMANOS.find((t) => t.id === size)?.peso || 0;
 
 const fechaTime = (m) => {
   const d = parseStamp(m.fecha);
@@ -149,6 +153,15 @@ export function regHint() {
   const q = ui.qty;
   if (!size) return `<span class="text-carbon-500">Elige un tamaño para empezar.</span>`;
   const avail = store.stockOf(BASE, size, st);
+  if (ui.mode === 'descontar') {
+    const cat = ui.dprod || BASE;
+    const av = store.stockOf(cat, size, st);
+    const peso = pesoOf(size);
+    const line = `${esc(cat)} ${esc(size)} disponible: <b>${fmtNum(av)}</b>${peso ? ` · ${fmtNum(peso)} g c/u` : ''}`;
+    if (!q) return line;
+    const left = av - q;
+    return `${line}<br>Se descuentan <b>${fmtNum(q)}</b>: quedan <b class="${left < 0 ? 'text-tomate-text' : ''}">${fmtNum(left)}</b>${peso ? ` (${fmtNum(q * peso)} g de masa)` : ''}.${left < 0 ? '<br><span class="text-tomate-text font-semibold">Es más de lo que hay registrado.</span>' : ''}`;
+  }
   if (ui.mode === 'producir') {
     if (!q) return `Hay <b>${fmtNum(avail)}</b> de ${esc(BASE)} ${esc(size)}.`;
     return `Se sumarán <b>${fmtNum(q)}</b> a ${esc(BASE)} ${esc(size)}: pasará de ${fmtNum(avail)} a <b>${fmtNum(avail + q)}</b>.`;
@@ -161,9 +174,11 @@ export function regHint() {
 
 export function viewRegistrar() {
   const proc = ui.mode === 'procesar';
+  const desc = ui.mode === 'descontar';
   const products = store.catalog().filter((g) => !g.base);
   const group = proc ? products.find((p) => p.nombre === ui.prod) : null;
-  const sizes = proc ? group?.tamanos || [] : SIZES;
+  const dgroup = desc ? store.catalog().find((g) => g.nombre === ui.dprod) : null;
+  const sizes = proc ? group?.tamanos || [] : desc ? dgroup?.tamanos || [] : SIZES;
 
   const today = dayKey(new Date());
   const recent = store
@@ -177,10 +192,20 @@ export function viewRegistrar() {
 
   return `
   <section class="space-y-4 max-w-xl">
-    <div class="grid grid-cols-2 p-1 bg-carbon-100 rounded-2xl" role="group" aria-label="Tipo de registro">
-      <button type="button" data-act="mode" data-mode="producir" class="seg-btn ${!proc ? 'is-on' : ''}">Producir masa</button>
-      <button type="button" data-act="mode" data-mode="procesar" class="seg-btn ${proc ? 'is-on' : ''}">Procesar masa</button>
+    <div class="grid grid-cols-3 p-1 bg-carbon-100 rounded-2xl" role="group" aria-label="Tipo de registro">
+      <button type="button" data-act="mode" data-mode="producir" class="seg-btn ${!proc && !desc ? 'is-on' : ''}">Producir</button>
+      <button type="button" data-act="mode" data-mode="procesar" class="seg-btn ${proc ? 'is-on' : ''}">Procesar</button>
+      <button type="button" data-act="mode" data-mode="descontar" class="seg-btn ${desc ? 'is-on' : ''}">Descontar</button>
     </div>
+
+    ${
+      desc
+        ? `<div class="card">
+        <h3 class="h3">¿Qué se descuenta?</h3>
+        <div class="flex flex-wrap gap-2">${store.catalog().map((g) => `<button type="button" data-act="pick-dprod" data-prod="${esc(g.nombre)}" class="chip ${ui.dprod === g.nombre ? 'is-on' : ''}">${esc(g.nombre)}</button>`).join('')}</div>
+      </div>`
+        : ''
+    }
 
     ${
       proc
@@ -214,14 +239,15 @@ export function viewRegistrar() {
         <button type="button" data-act="qty-inc" class="step-btn" aria-label="Sumar uno">${icon('plus', 'w-7 h-7')}</button>
       </div>
       <div class="flex flex-wrap gap-1.5 mt-3">
-        ${[5, 10, 50, 100].map((n) => `<button type="button" data-act="qty-add" data-n="${n}" class="chip !px-3">+${n}</button>`).join('')}
+        ${(desc ? [1, 2, 3, 5] : [5, 10, 50, 100]).map((n) => `<button type="button" data-act="${desc ? 'qty-set' : 'qty-add'}" data-n="${n}" class="chip !px-3">${desc ? n : '+' + n}</button>`).join('')}
         <button type="button" data-act="qty-clear" class="chip !px-3 ml-auto text-carbon-500">Borrar</button>
       </div>
       <p id="reg-hint" class="mt-4 rounded-xl bg-carbon-50 border border-carbon-200 px-3.5 py-3 text-[15px] leading-relaxed">${regHint()}</p>
     </div>
 
-    <button type="button" data-act="save-mov" class="btn btn-primary w-full min-h-[60px] text-lg">${icon('check', 'w-6 h-6')} ${proc ? 'Guardar procesamiento' : 'Guardar producción'}</button>
+    <button type="button" data-act="save-mov" class="btn btn-primary w-full min-h-[60px] text-lg">${icon('check', 'w-6 h-6')} ${proc ? 'Guardar procesamiento' : desc ? 'Descontar' : 'Guardar producción'}</button>
     <p class="text-sm text-carbon-500 text-center -mt-1">Se guarda en este dispositivo. Para enviarlo al Google Sheet pulsa <b>Subir</b>.</p>
+    <button type="button" data-act="ajuste-new" class="btn btn-ghost w-full">${icon('sliders')} Ajuste manual (sumar o restar)</button>
 
     <div class="pt-2">
       <h3 class="h3">Registros de hoy</h3>
@@ -525,7 +551,7 @@ export function viewAdmin() {
   <section class="space-y-6 max-w-2xl">
     <div>
       <h2 class="h2">Administración</h2>
-      <p class="text-carbon-500 text-[15px]">Productos, correcciones y ajustes. Los cambios se suben con el botón Subir.</p>
+      <p class="text-carbon-500 text-[15px]">Productos y correcciones. Los cambios se suben con el botón Subir.</p>
     </div>
 
     <div class="card">
@@ -547,12 +573,6 @@ export function viewAdmin() {
           </li>`).join('')}</ul>`
           : '<p class="text-carbon-500">No hay productos.</p>'
       }
-    </div>
-
-    <div class="card">
-      <h3 class="h3">Ajustar inventario</h3>
-      <p class="text-carbon-500 text-[15px] mb-3">Suma o resta unidades a cualquier producto (por ejemplo, masa vendida, merma o conteo físico).</p>
-      <button type="button" data-act="ajuste-new" class="btn btn-ghost w-full">${icon('sliders')} Nuevo ajuste</button>
     </div>
 
     <div class="card">

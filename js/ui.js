@@ -33,6 +33,12 @@ function normalizeRegistrar() {
     const allowed = products.find((p) => p.nombre === ui.prod)?.tamanos || [];
     if (ui.size && !allowed.includes(ui.size)) ui.size = null;
   }
+  if (ui.mode === 'descontar') {
+    const groups = store.catalog();
+    if (!groups.some((g) => g.nombre === ui.dprod)) ui.dprod = BASE;
+    const allowed = groups.find((g) => g.nombre === ui.dprod)?.tamanos || [];
+    if (ui.size && !allowed.includes(ui.size)) ui.size = null;
+  }
 }
 
 export function renderHeader() {
@@ -198,6 +204,7 @@ const setQty = (n) => {
 };
 
 async function saveMov() {
+  if (ui.mode === 'descontar') return saveDescuento();
   const proc = ui.mode === 'procesar';
   if (proc && !ui.prod) return toast('Elige en qué producto la conviertes.', 'warn');
   if (!ui.size) return toast('Elige un tamaño.', 'warn');
@@ -226,6 +233,27 @@ async function saveMov() {
   ui.qty = 0;
   renderView();
   toast(proc ? `Guardado: ${q} × ${ui.prod} ${ui.size}` : `Guardado: ${q} × ${BASE} ${ui.size}`);
+}
+
+async function saveDescuento() {
+  const cat = ui.dprod || BASE;
+  if (!ui.size) return toast('Elige un tamaño.', 'warn');
+  if (!(ui.qty > 0)) return toast('Escribe una cantidad mayor a 0.', 'warn');
+  const avail = store.stockOf(cat, ui.size);
+  if (ui.qty > avail) {
+    const ok = await confirmDialog({
+      title: 'Más de lo registrado',
+      message: `Solo hay ${avail} de ${cat} ${ui.size} registradas y quieres descontar ${ui.qty}. ¿Guardar de todos modos?`,
+      ok: 'Guardar igual',
+    });
+    if (!ok) return;
+  }
+  store.addMov({ tipo: TIPO.AJUSTE, categoria: cat, tamano: ui.size, cantidad: -ui.qty });
+  navigator.vibrate?.(25);
+  const q = ui.qty;
+  ui.qty = 1;
+  renderView();
+  toast(`Descontado: ${q} × ${cat} ${ui.size}`);
 }
 
 // ───────────────────────── Reportes ─────────────────────────
@@ -304,8 +332,18 @@ async function onClick(e) {
     case 'mode':
       ui.mode = d.mode;
       ui.size = null;
+      if (d.mode === 'descontar') {
+        ui.dprod ||= BASE;
+        if (!ui.qty) ui.qty = 1;
+      }
       renderView();
       return;
+    case 'pick-dprod':
+      ui.dprod = d.prod;
+      renderView();
+      return;
+    case 'qty-set':
+      return setQty(Number(d.n));
     case 'pick-prod':
       ui.prod = d.prod;
       renderView();
@@ -458,7 +496,6 @@ async function onClick(e) {
 
     // Admin: ajustes y registros
     case 'ajuste-new':
-      if (!requireAdmin()) return;
       openModal({ title: 'Ajustar inventario', body: ajusteForm() });
       return;
     case 'adm-today':
@@ -570,7 +607,18 @@ async function onSubmit(e) {
     return;
   }
 
-  if (!ui.admin) return; // los demás formularios son solo de administrador
+  if (kind === 'ajuste') {
+    const c = comboByKey(String(fd.get('clave')));
+    const n = Number(fd.get('cantidad'));
+    if (!c) return showFormError('Elige un producto.');
+    if (!Number.isInteger(n) || n < 1) return showFormError('Escribe una cantidad entera mayor a 0.');
+    store.addMov({ tipo: TIPO.AJUSTE, categoria: c.cat, tamano: c.size, cantidad: n * Number(fd.get('signo')) });
+    closeModal();
+    toast('Ajuste registrado. Pulsa Subir para enviarlo al Sheet.');
+    return;
+  }
+
+  if (!ui.admin) return;
 
   if (kind === 'producto') {
     const id = String(fd.get('id') || '');
@@ -608,17 +656,6 @@ async function onSubmit(e) {
     store.setPedido({ fecha, nombre, items }, String(fd.get('prevFecha') || ''), String(fd.get('prevNombre') || ''));
     closeModal();
     toast('Pedido guardado. Pulsa Subir para enviarlo al Sheet.');
-    return;
-  }
-
-  if (kind === 'ajuste') {
-    const c = comboByKey(String(fd.get('clave')));
-    const n = Number(fd.get('cantidad'));
-    if (!c) return showFormError('Elige un producto.');
-    if (!Number.isInteger(n) || n < 1) return showFormError('Escribe una cantidad entera mayor a 0.');
-    store.addMov({ tipo: TIPO.AJUSTE, categoria: c.cat, tamano: c.size, cantidad: n * Number(fd.get('signo')) });
-    closeModal();
-    toast('Ajuste registrado. Pulsa Subir para enviarlo al Sheet.');
     return;
   }
 

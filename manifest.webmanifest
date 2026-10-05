@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "name": "Masas Pizzería — Inventario y producción",
-  "short_name": "Masas",
+  "name": "P Management — Inventario y producción",
+  "short_name": "P Mgmt",
   "description": "Control de producción e inventario de masas para pizzería",
   "lang": "es",
   "start_url": "/",

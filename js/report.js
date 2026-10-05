@@ -33,7 +33,7 @@ export function periodRange(kind, ref) {
 export function buildReport(state, kind, ref, { includeStock = true } = {}) {
   const { from, to, title } = periodRange(kind, ref);
   const inRange = state.movs.filter((m) => {
-    if (isVoid(m)) return false;
+    if (isVoid(m) || m.tipo === TIPO.AJUSTE) return false;
     const d = parseStamp(m.fecha);
     return d && d >= from && d < to;
   });
