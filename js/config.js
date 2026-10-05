@@ -19,14 +19,14 @@ export const CONFIG = {
   // ── Google Sheets ────────────────────────────────────────────────
   // El ID está en la URL del Sheet:
   // https://docs.google.com/spreadsheets/d/  ESTE_ES_EL_ID  /edit
-  SPREADSHEET_ID: 'PEGA_AQUI_EL_ID_DE_TU_GOOGLE_SHEET',
+  SPREADSHEET_ID: '1wRLsrW2Bi3GqgizUzD2QHh90doExn6jEmBFv5uy5POc',
 
   // Cuenta de servicio de Google Cloud (archivo JSON que descargas al
   // crear la clave). Copia SOLO estos dos campos tal cual vienen en el JSON.
   // IMPORTANTE: comparte el Google Sheet (como Editor) con client_email.
   SERVICE_ACCOUNT: {
-    client_email: 'PEGA_AQUI@tu-proyecto.iam.gserviceaccount.com',
-    private_key: '-----BEGIN PRIVATE KEY-----\nPEGA_AQUI_TODA_LA_CLAVE\n-----END PRIVATE KEY-----\n',
+    client_email: 'masas-app@masas-pizzeria.iam.gserviceaccount.com',
+    private_key: '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDDUK0sYd+s4GTW\n9o6RdQo7MDw5JVA5THpN/Hh7Aj/A7eZQ+4OW4aWaviARPF5jzMcb5NcmCw4WcaCR\n/nIFXWc74cnXFCkvDncqhQuxS8PUmXhte1e8t6N8EItoZxw+W8TVnHVjCmLJuij4\naom5Q2VmQR2CCFfMGvWm+mDltNTfnFAoT/ynthd4O/+XYBZgRMzkgEIfARqpD5so\nNYdhlmGsW3oHIaM0jeW3OXQxEO3Ut6p1l1oUZNTI9PEhkuyEekoRAcYj/OJrFrTn\nZFr3VbfkdNae90cFW1dzeQM/CH7DBxTVjMxsvHmSWKlnhW3180nXLULkkO3FcZJX\ni7BaIVpFAgMBAAECggEAAxyicwi+K77JgdlHd+Qm/RQYKYrsJnWO+fYcpKJqX0m1\nt92XVkyTEGOYwYg2MsiHoEH69uVfMewD3xTwPnX4rUNm2AaUtLtkxP3TVrL6fu/R\nCOGEX4KHgsmwBuz5o2QKlKKxBhpwwikKpRFBeierkmpVgjBdgb1+OM0CxTYmhseA\nz4a47fI7I6ivOj0svFle8823zglDtzG90FB7LyX+Pnj0UZ4iRyhAvZDplEjj0QVA\nmdP0gHBshXTJovJJqH+f3XlHHuh7chAVMjCqirO7S5Mm1q6RWxIGyGDTfqg3+OSv\nh1wdopFMTKW1XmkkLGbeIAsECXZInScg2hPlh6q7UQKBgQDv2TySBCdu+gthJDIk\nwidNKRtJSszB7P5MA3IET+THKLfmhjuYCHD26YzCzPuhu6Zf1Z+utW3IFu8qh5Bs\nWE0Y175KfndNLBr1yGtPok49TOy+n7MSG4TVvGI7H4BZ+sHcoATCS+zF7Od8eBko\nEIZzY5G7z38DwQ87PV7ZYuGkCQKBgQDQd7mx0eVtjl+jVM1aN+S1bDP+KQ7GDOct\ntHGVjDxwG6M3/vghVG+pljpyvfysbnO9LppNAX29flaT9QciHrRbKjD9gEV3M5Nx\nvklSbGBFw5gCoFOFS7sqS0S93vVgdEKqFIU4qnNi6p6RtmCQ3gTg2jfYhovzOgRw\nOQF/6hFrXQKBgQDVU5BuBsfUCw3n/ruiuhUeqfsc+yyXJ2Ue0smsUCsZgHvgy29h\nz9A5rIyIDq2YskBOaMC4MaJNHyjl2OF5nCgmem1D8KvHtfzcsr/PenrARxUijwRE\njLlfKUjtcR1F6qRWyPSyo7kaaZWSvXcSjXAoXV0XgHxmKGaVuAYOr8YlkQKBgFM5\nuRTYqzOVx3C5hlIiRlh3njo1wgQnWpPQmhgOKILJRdwxGnaT8xBNPYBZgOqGHgbE\n+C0OD1j7ey0OgY6Jm49ZxL0v3Iu+N3sNcNBLHBQ+Bg3mW/G3Tj2QVx1GScf8IjEs\niBMbWX2AFVYu7VZojKIH/IuhC3ZLD0KOP58Fn3axAoGAb8Zj90oTqtC8PPhvsmgO\ngcViAZhC3QuNIJXeC/0WRZ4baHACxWKTiioairi1R7WvUXaksNbYBLHF91EakRWm\ntupcMSlQRDZvC7mhtyyQrJOdKiqNzFuw2c667Xxlv7yMATfJplirR5kaWLpC8PH8\nA/f/rm9biaz72TFOUsBG9ZE=\n-----END PRIVATE KEY-----\n',
   },
 
   // Nombres exactos de las pestañas del Sheet.
@@ -40,12 +40,12 @@ export const CONFIG = {
   // Solo estos nombres pueden entrar (ya no se puede escribir uno libre).
   // Cada persona necesita SU PIN para entrar — lo define abajo, en PINES_LOGIN.
 
-  USUARIOS: ['Gaston', 'Jean', 'Deibis', 'Alfredo', 'Midgalia', 'Laura'],
+  USUARIOS: ['Gaston', 'Jean', 'Deibis', 'Alfredo', 'Midgalia', 'Admin'],
 
   // Sal única de esta instalación para proteger los PIN (ver GUIA.md, paso 4).
   // Cambiarla invalida TODOS los hashes de abajo (habría que regenerarlos).
   // Genera la tuya propia al publicar — no dejes esta de fábrica.
-  PIN_SALT: '6492dbda5fcc825e9d9bfa684099d5a7',
+  PIN_SALT: 'd6391d54a7702c952de291e16fdd0c0f',
 
   // PIN para ENTRAR a la app con cada nombre (obligatorio). Se guarda como
   // huella PBKDF2 (150.000 vueltas + la sal de arriba) — mucho más resistente
@@ -54,27 +54,27 @@ export const CONFIG = {
   // corresponden TODOS al PIN de ejemplo 2580 — para darle a alguien su
   // propio PIN, genera su hash como en GUIA.md (paso 4) y reemplaza su línea.
   PINES_LOGIN: {
-    Gaston: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Jean: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Deibis: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Alfredo: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Midgalia: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Laura: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
+    Gaston: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Jean: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Deibis: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Alfredo: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Midgalia: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Laura: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
   },
 
   // PIN para entrar en MODO ADMINISTRADOR una vez ya adentro de la app
   // (gestionar productos, metas, pedidos y correcciones). Puede ser igual o distinto
   // al PIN de entrada de cada persona — es un segundo candado aparte.
   PINES_ADMIN: {
-    Gaston: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Jean: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Deibis: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Alfredo: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Midgalia: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
-    Laura: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
+    Gaston: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
+    Jean: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
+    Deibis: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
+    Alfredo: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
+    Midgalia: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
+    Laura: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
   },
   // PIN para cualquiera que no esté en la lista de arriba. Ejemplo: 2580
-  PIN_ADMIN_DEFECTO: '72a3158c919d5e45e5378360f7cf76e4d2856930c206e1e485a2d237551a7330',
+  PIN_ADMIN_DEFECTO: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
 
   // ── Catálogo ─────────────────────────────────────────────────────
   BASE_NAME: 'Masa Base',
