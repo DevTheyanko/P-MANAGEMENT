@@ -59,22 +59,22 @@ export const CONFIG = {
     Laura: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
     Eduardo: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
     Midgalia: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
-    Laura: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Admin: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
   },
 
   // PIN para entrar en MODO ADMINISTRADOR una vez ya adentro de la app
   // (gestionar productos, metas, pedidos y correcciones). Puede ser igual o distinto
   // al PIN de entrada de cada persona — es un segundo candado aparte.
   PINES_ADMIN: {
-    Gaston: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
-    Jean: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
-    Laura: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
-    Eduardo: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
-    Midgalia: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
-    Laura: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
+    Gaston: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Jean: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Laura: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Eduardo: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Midgalia: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Admin: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
   },
   // PIN para cualquiera que no esté en la lista de arriba. Ejemplo: 2580
-  PIN_ADMIN_DEFECTO: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
+  PIN_ADMIN_DEFECTO: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
 
   // ── Catálogo ─────────────────────────────────────────────────────
   BASE_NAME: 'Masa Base',
