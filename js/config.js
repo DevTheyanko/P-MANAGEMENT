@@ -55,7 +55,7 @@ export const CONFIG = {
   // propio PIN, genera su hash como en GUIA.md (paso 4) y reemplaza su línea.
   PINES_LOGIN: {
     Gaston: '62120fd71db781dd1d4684edc19b69d21b2e6cb08359d22dc976fe3bbd0aa193
-    Jean: '62120fd71db781dd1d4684edc19b69d21b2e6cb08359d22dc976fe3bbd0aa193',
+    Jean: '6406d01e7e3bd1c866387b998da1b2506fc9e15afe2bdc2636a4fb2b86b480c0',
     Laura: '62120fd71db781dd1d4684edc19b69d21b2e6cb08359d22dc976fe3bbd0aa193',
     Eduardo: '62120fd71db781dd1d4684edc19b69d21b2e6cb08359d22dc976fe3bbd0aa193',
     Midgalia: '62120fd71db781dd1d4684edc19b69d21b2e6cb08359d22dc976fe3bbd0aa193',
