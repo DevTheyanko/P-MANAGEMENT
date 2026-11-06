@@ -40,7 +40,7 @@ export const CONFIG = {
   // Solo estos nombres pueden entrar (ya no se puede escribir uno libre).
   // Cada persona necesita SU PIN para entrar — lo define abajo, en PINES_LOGIN.
 
-  USUARIOS: ['Gaston', 'Jean', 'Deibis', 'Alfredo', 'Midgalia', 'Admin'],
+  USUARIOS: ['Gaston', 'Jean', 'Laura', 'Eduardo', 'Midgalia', 'Admin'],
 
   // Sal única de esta instalación para proteger los PIN (ver GUIA.md, paso 4).
   // Cambiarla invalida TODOS los hashes de abajo (habría que regenerarlos).
@@ -56,8 +56,8 @@ export const CONFIG = {
   PINES_LOGIN: {
     Gaston: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
     Jean: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
-    Deibis: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
-    Alfredo: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Laura: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
+    Eduardo: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
     Midgalia: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
     Laura: '973b8192c7b3392fad63fa13c11f5a7ef6b63e4e877a106ff52d339f80ab5aac',
   },
@@ -68,8 +68,8 @@ export const CONFIG = {
   PINES_ADMIN: {
     Gaston: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
     Jean: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
-    Deibis: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
-    Alfredo: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
+    Laura: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
+    Eduardo: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
     Midgalia: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
     Laura: 'cd2b35beb500019c44af76b06ceb975d0934529d568738b25a1e65f1c419b9dd',
   },
